@@ -9,9 +9,16 @@ try:
     import random, string, time, os, socket
 except Exception:
     import time
-    print("Please make sure you have the required programs installed before running.")
-    time.sleep(5)
-    exit()
+    print("-Required packages not installed, installing now...")
+    time.sleep(2.5);os.system("pip install selenium");time.sleep(1)
+    from selenium import webdriver
+    from selenium.webdriver.common.keys import Keys
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support import expected_conditions as EC
+    from selenium.common.exceptions import NoSuchElementException
+    from msedge.selenium_tools import Edge, EdgeOptions
+    import random, string, time, os, socket
 
 webdriver_location="MicrosoftWebDriver.exe";os.system("cls")
 options=EdgeOptions();os.system("cls")
