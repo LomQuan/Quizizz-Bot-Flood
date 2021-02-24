@@ -25,7 +25,7 @@ options=EdgeOptions();os.system("cls")
 options.use_chromium=True;os.system("cls")
 options.binary_location=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe';os.system("cls")
 browser=Edge(options=options,executable_path=webdriver_location);os.system("cls")
-time.sleep(5);os.system("cls")
+time.sleep(10);os.system("cls");failed=0;passed=0;total=0
 qp=input("Quiz Pin: ")
 nb=input("Number of Bots: ")
 
@@ -43,6 +43,8 @@ except:
 print("-Calculated action delay: "+str(pingms))
 
 for i in range(int(nb)):
+    total=total+1
+    passed=passed+1
     try:
         browser.get("https://quizizz.com/join")
         search=browser.find_element_by_class_name("check-room-input")
@@ -62,8 +64,11 @@ for i in range(int(nb)):
         search.send_keys(Keys.CONTROL+"A")
         search.send_keys(''.join(random.choice(string.ascii_letters) for _ in range(10)))
         search.send_keys(Keys.RETURN)
-    except Exception as e:
-        print("Error occured: "+str(e))
-    finally:time.sleep(pingms)
+    except (Exception,NoSuchElementException):
+        failed=failed+1
+        passed=passed-1
+    finally:
+        time.sleep(pingms)
 browser.close()
+print("\n\n       Attempted: "+str(total)+" Succeeded: "+str(passed)+" Failed: "+str(failed)+"\n\n\n")
 exit()
