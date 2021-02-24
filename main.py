@@ -1,52 +1,62 @@
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from msedge.selenium_tools import Edge, EdgeOptions
-import time
-import pyautogui as pya
-import keyboard
-import random, string
+try:
+    from selenium import webdriver
+    from selenium.webdriver.common.keys import Keys
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support import expected_conditions as EC
+    from selenium.common.exceptions import NoSuchElementException
+    from msedge.selenium_tools import Edge, EdgeOptions
+    import random, string, time, os, socket
+except Exception:
+    import time
+    print("Please make sure you have the required programs installed before running.")
+    time.sleep(5)
+    exit()
 
-webdriver_location = "MicrosoftWebDriver.exe"
-options = EdgeOptions()
-options.use_chromium = True
-options.binary_location=r'C:\Program Files (x86)\Microsoft\Edge Dev\Application\msedge.exe'
-browser = Edge(options=options, executable_path=webdriver_location)
-qp = input("Quiz Pin: ")
-nb = input("Number of Bots: ")
-nb = int(nb)
+webdriver_location="MicrosoftWebDriver.exe";os.system("cls")
+options=EdgeOptions();os.system("cls")
+options.use_chromium=True;os.system("cls")
+options.binary_location=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe';os.system("cls")
+browser=Edge(options=options,executable_path=webdriver_location);os.system("cls")
+time.sleep(5);os.system("cls")
+qp=input("Quiz Pin: ")
+nb=input("Number of Bots: ")
 
-browser.get("https://quizizz.com/join")
-pya.moveTo(182, 311)
-pya.click()
-pya.write(qp, 0.01)
-pya.press("enter")
-pya.moveTo(486, 452)
-pya.click()
-pya.moveTo(477, 316)
-x = ''.join(random.choice(string.ascii_letters) for _ in range(15))
-pya.click()
-pya.click()
-pya.write(x, 0.01)
-pya.press('enter')
-nb = nb - 1
-while nb != 0:
-    pya.keyDown("ctrl")
-    pya.press("t")
-    pya.keyUp("ctrl")
-    pya.write("https://quizizz.com/join", 0.01)
-    pya.press("enter")
-    time.sleep(1)
-    pya.moveTo(182, 311)
-    pya.click()
-    pya.write(qp, 0.01)
-    pya.press("enter")
-    pya.moveTo(486, 452)
-    pya.click()
-    pya.moveTo(477, 316)
-    x = ''.join(random.choice(string.ascii_letters) for _ in range(15))
-    pya.click()
-    pya.click()
-    pya.write(x, 0.01)
-    pya.press('enter')
-    time.sleep(0.5)
-    nb = nb - 1
+try:
+    host=socket.gethostbyname("quizizz.com")
+    before=time.perf_counter()
+    time.sleep(0.25)
+    s=socket.create_connection((host, 80), 2)
+    after=time.perf_counter()
+    pingms=after-before
+    pingms=round(pingms, 2)+1
+except:
+    pingms=2
+
+print("-Calculated action delay: "+str(pingms))
+
+for i in range(int(nb)):
+    try:
+        browser.get("https://quizizz.com/join")
+        search=browser.find_element_by_class_name("check-room-input")
+        search.send_keys(qp)
+        search.send_keys(Keys.RETURN)
+        print("-Joined Game")
+        time.sleep(pingms)
+        if browser.find_elements_by_css_selector('.secondary-button.start-over'):
+            g=browser.find_elements_by_css_selector('.secondary-button.start-over')
+            print("-Start-Over button found")
+            g[0].click()
+        element=WebDriverWait(browser,10).until(EC.presence_of_element_located((By.CLASS_NAME,"player-name-generator-icon")))
+        element.click()
+        print("-Entering name option")
+        search=browser.find_element_by_class_name("enter-name-field")
+        time.sleep(pingms)
+        search.send_keys(Keys.CONTROL+"A")
+        search.send_keys(''.join(random.choice(string.ascii_letters) for _ in range(10)))
+        search.send_keys(Keys.RETURN)
+    except Exception as e:
+        print("Error occured: "+str(e))
+    finally:time.sleep(pingms)
+browser.close()
+exit()
