@@ -20,11 +20,11 @@ except Exception:
     from msedge.selenium_tools import Edge, EdgeOptions
     import random, string, time, os, socket
 
-webdriver_location="MicrosoftWebDriver.exe";os.system("cls")
-options=EdgeOptions();os.system("cls")
-options.use_chromium=True;os.system("cls")
-options.binary_location=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe';os.system("cls")
-browser=Edge(options=options,executable_path=webdriver_location);os.system("cls")
+webdriver_location="MicrosoftWebDriver.exe"
+options=EdgeOptions()
+options.use_chromium=True
+options.binary_location=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+browser=Edge(options=options,executable_path=webdriver_location)
 time.sleep(10);os.system("cls");failed=0;passed=0;total=0
 qp=input("Quiz Pin: ")
 nb=input("Number of Bots: ")
