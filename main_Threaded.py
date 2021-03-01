@@ -25,7 +25,7 @@ options=EdgeOptions();os.system("cls")
 options.use_chromium=True;os.system("cls")
 options.binary_location=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe';os.system("cls")
 browser=Edge(options=options,executable_path=webdriver_location);os.system("cls")
-time.sleep(10);os.system("cls");failed=0;passed=0;total=0
+time.sleep(10);os.system("cls")
 qp=input("Quiz Pin: ")
 nb=input("Number of bots per thread: ")
 th=input("Number of threads: ")
@@ -45,8 +45,6 @@ print("-Calculated action delay: "+str(pingms))
 
 def JoinThread():
     for i in range(int(nb)):
-        total=total+1
-        passed=passed+1
         try:
             browser.get("https://quizizz.com/join")
             search=browser.find_element_by_class_name("check-room-input")
@@ -65,8 +63,7 @@ def JoinThread():
             search.send_keys(''.join(random.choice(string.ascii_letters) for _ in range(10)))
             search.send_keys(Keys.RETURN)
         except (Exception,NoSuchElementException):
-            failed=failed+1
-            passed=passed-1
+            pass
         finally:
             time.sleep(pingms)
     browser.close()
