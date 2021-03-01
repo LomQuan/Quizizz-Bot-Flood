@@ -6,7 +6,7 @@ try:
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.common.exceptions import NoSuchElementException
     from msedge.selenium_tools import Edge, EdgeOptions
-    import random, string, time, os, socket
+    import random, string, time, os, socket, threading
 except Exception:
     import time
     print("-Required packages not installed, installing now...")
@@ -18,7 +18,7 @@ except Exception:
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.common.exceptions import NoSuchElementException
     from msedge.selenium_tools import Edge, EdgeOptions
-    import random, string, time, os, socket
+    import random, string, time, os, socket, threading
 
 webdriver_location="MicrosoftWebDriver.exe";os.system("cls")
 options=EdgeOptions();os.system("cls")
@@ -27,7 +27,8 @@ options.binary_location=r'C:\Program Files (x86)\Microsoft\Edge\Application\msed
 browser=Edge(options=options,executable_path=webdriver_location);os.system("cls")
 time.sleep(10);os.system("cls");failed=0;passed=0;total=0
 qp=input("Quiz Pin: ")
-nb=input("Number of Bots: ")
+nb=input("Number of bots per thread: ")
+th=input("Number of threads: ")
 
 try:
     host=socket.gethostbyname("quizizz.com")
@@ -42,31 +43,37 @@ except:
 
 print("-Calculated action delay: "+str(pingms))
 
-for i in range(int(nb)):
-    total=total+1
-    passed=passed+1
-    try:
-        browser.get("https://quizizz.com/join")
-        search=browser.find_element_by_class_name("check-room-input")
-        search.send_keys(qp)
-        search.send_keys(Keys.RETURN)
-        print("-Joined Game")
-        time.sleep(pingms)
-        if browser.find_elements_by_css_selector('.secondary-button.start-over'):
-            g=browser.find_elements_by_css_selector('.secondary-button.start-over')
-            print("-Start-Over button found")
-            g[0].click()
-        print("-Entering name option")
-        search=browser.find_element_by_class_name("enter-name-field")
-        time.sleep(pingms)
-        search.send_keys(Keys.CONTROL+"A")
-        search.send_keys(''.join(random.choice(string.ascii_letters) for _ in range(10)))
-        search.send_keys(Keys.RETURN)
-    except (Exception,NoSuchElementException):
-        failed=failed+1
-        passed=passed-1
-    finally:
-        time.sleep(pingms)
-browser.close()
-print("\n\n       Attempted: "+str(total)+" Succeeded: "+str(passed)+" Failed: "+str(failed)+"\n\n\n")
-exit()
+def JoinThread():
+    for i in range(int(nb)):
+        total=total+1
+        passed=passed+1
+        try:
+            browser.get("https://quizizz.com/join")
+            search=browser.find_element_by_class_name("check-room-input")
+            search.send_keys(qp)
+            search.send_keys(Keys.RETURN)
+            print("-Joined Game")
+            time.sleep(pingms)
+            if browser.find_elements_by_css_selector('.secondary-button.start-over'):
+                g=browser.find_elements_by_css_selector('.secondary-button.start-over')
+                print("-Start-Over button found")
+                g[0].click()
+            print("-Entering name option")
+            search=browser.find_element_by_class_name("enter-name-field")
+            time.sleep(pingms)
+            search.send_keys(Keys.CONTROL+"A")
+            search.send_keys(''.join(random.choice(string.ascii_letters) for _ in range(10)))
+            search.send_keys(Keys.RETURN)
+        except (Exception,NoSuchElementException):
+            failed=failed+1
+            passed=passed-1
+        finally:
+            time.sleep(pingms)
+    browser.close()
+
+for i in range(int(th)):
+    jointhread=threading.Thread(target=JoinThread)
+    jointhread.start()
+
+#print("\n\n       Attempted: "+str(total)+" Succeeded: "+str(passed)+" Failed: "+str(failed)+"\n\n\n")
+#exit()
