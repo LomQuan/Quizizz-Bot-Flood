@@ -56,8 +56,6 @@ for i in range(int(nb)):
             g=browser.find_elements_by_css_selector('.secondary-button.start-over')
             print("-Start-Over button found")
             g[0].click()
-        element=WebDriverWait(browser,10).until(EC.presence_of_element_located((By.CLASS_NAME,"player-name-generator-icon")))
-        element.click()
         print("-Entering name option")
         search=browser.find_element_by_class_name("enter-name-field")
         time.sleep(pingms)
