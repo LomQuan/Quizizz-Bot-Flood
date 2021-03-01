@@ -20,12 +20,6 @@ except Exception:
     from msedge.selenium_tools import Edge, EdgeOptions
     import random, string, time, os, socket, threading
 
-webdriver_location="MicrosoftWebDriver.exe";os.system("cls")
-options=EdgeOptions();os.system("cls")
-options.use_chromium=True;os.system("cls")
-options.binary_location=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe';os.system("cls")
-browser=Edge(options=options,executable_path=webdriver_location);os.system("cls")
-time.sleep(10);os.system("cls")
 qp=input("Quiz Pin: ")
 nb=input("Number of bots per thread: ")
 th=input("Number of threads: ")
@@ -44,6 +38,11 @@ except:
 print("-Calculated action delay: "+str(pingms))
 
 def JoinThread():
+    webdriver_location="MicrosoftWebDriver.exe"
+    options=EdgeOptions()
+    options.use_chromium=True
+    options.binary_location=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+    browser=Edge(options=options,executable_path=webdriver_location)
     for i in range(int(nb)):
         try:
             browser.get("https://quizizz.com/join")
@@ -72,5 +71,5 @@ for i in range(int(th)):
     jointhread=threading.Thread(target=JoinThread)
     jointhread.start()
 
-#print("\n\n       Attempted: "+str(total)+" Succeeded: "+str(passed)+" Failed: "+str(failed)+"\n\n\n")
-#exit()
+# print("\n\n       Attempted: "+str(total)+" Succeeded: "+str(passed)+" Failed: "+str(failed)+"\n\n\n")
+# exit()
