@@ -55,6 +55,7 @@ def JoinThread():
                 g=browser.find_elements_by_css_selector('.secondary-button.start-over')
                 print("-Start-Over button found")
                 g[0].click()
+            time.sleep(0.5)
             print("-Entering name option")
             search=browser.find_element_by_class_name("enter-name-field")
             time.sleep(pingms)
