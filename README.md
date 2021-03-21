@@ -33,4 +33,4 @@ browser=webdriver.Chrome(options=options,executable_path=webdriver_location)
 ```
 
 # If You Want To Copy
-I'm not going to be upset if you copy my code, its open source for a reason. Just give credit where its desired. If you want to work together on a project feel free to reach out to me. I'm often bored and looking for a project.
+I'm not going to be upset if you copy my code, its open source for a reason. Just give credit where its desired. If you want to work together on a project feel free to reach out to me. I'm often bored and looking for a project. Also, please don't copy for no reason, at least make your own changes.
