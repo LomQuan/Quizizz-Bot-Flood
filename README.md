@@ -8,9 +8,9 @@ To use you must download one of the two files, either threaded or not.
 
 After downloading the file of your choice you must get the latest edge or chrome web driver, links below:
 
-(Edge)[https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/]
+[Edge](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)
 
-(Chrome)[https://sites.google.com/a/chromium.org/chromedriver/downloads]
+[Chrome](https://sites.google.com/a/chromium.org/chromedriver/downloads)
 
 You must move the web driver exe file into the same folder as the python file, You also need to update the name of the driver inside the python file like so:
 ```
