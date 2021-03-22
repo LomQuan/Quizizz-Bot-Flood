@@ -22,6 +22,8 @@ Upon Startup you will also need to pick what browser you want to use. This shoul
 # If There Are Still Issues
 If there are still issues after fixing the file to your liking then I would try the following things.
 
+You can try installing the packages manually but if they aren't found they will be auto installed upon running either python file.
+
 1. If you are using msedge try installing the required library: `pip install msedge-selenium-tools`
 2. If you haven't installed selenium: `pip install selenium`
 3. If you haven't installed python: [Python Download 3.7](https://www.python.org/downloads/release/python-379/)
