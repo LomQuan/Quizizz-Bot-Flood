@@ -32,5 +32,13 @@ options.binary_location=r'C:\Program Files\Google\Chrome\Application\chrome.exe'
 browser=webdriver.Chrome(options=options,executable_path=webdriver_location)
 ```
 
+# If There Are Still Issues
+If there are still issues after fixing the file to your liking then I would try the following things.
+
+1. If you are using msedge try installing the required library: `pip install msedge-selenium-tools`
+2. If you haven't installed selenium: `pip install selenium`
+3. If you haven't installed python: [Python Download 3.7](https://www.python.org/downloads/release/python-379/)
+4. If it still doesn't work open an issue on GitHub with as much information as you can provide or join my support discord server [Here](https://discord.gg/RnbxGu6jYt). Expect an answer or response within 24 hours.
+
 # If You Want To Copy
 I'm not going to be upset if you copy my code, its open source for a reason. Just give credit where its desired. If you want to work together on a project feel free to reach out to me. I'm often bored and looking for a project. Also, please don't copy for no reason, at least make your own changes.
