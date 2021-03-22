@@ -55,6 +55,7 @@ for i in range(int(nb)):
     passed=passed+1
     try:
         browser.get("https://quizizz.com/join")
+        time.sleep(pingms)
         search=browser.find_element_by_class_name("check-room-input")
         search.send_keys(qp)
         search.send_keys(Keys.RETURN)
