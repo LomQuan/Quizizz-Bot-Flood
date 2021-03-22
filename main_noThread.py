@@ -1,4 +1,5 @@
 try:
+    import random, string, time, os, socket
     from selenium import webdriver
     from selenium.webdriver.common.keys import Keys
     from selenium.webdriver.common.by import By
@@ -6,11 +7,9 @@ try:
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.common.exceptions import NoSuchElementException
     from msedge.selenium_tools import Edge, EdgeOptions
-    import random, string, time, os, socket
 except Exception:
-    import time
+    import random, string, time, os, socket
     print("-Required packages not installed, installing now...")
-    time.sleep(2.5)
     os.system("pip install selenium")
     os.system("pip install msedge-selenium-tools")
     time.sleep(1)
@@ -21,16 +20,23 @@ except Exception:
     from selenium.webdriver.support import expected_conditions as EC
     from selenium.common.exceptions import NoSuchElementException
     from msedge.selenium_tools import Edge, EdgeOptions
-    import random, string, time, os, socket
 
+# ///////////////////////////////////////
+#     Browser Driver Name/Path Here:
 webdriver_location="MicrosoftWebDriver.exe"
-options=EdgeOptions()
-options.use_chromium=True
-options.binary_location=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
-browser=Edge(options=options,executable_path=webdriver_location)
-os.system("cls")
-time.sleep(10)
-os.system("cls")
+# ///////////////////////////////////////
+
+bt=input("Browser [E=Edge;C=Chrome]: ")
+if bt.lower() == "c":
+    options=webdriver.ChromeOptions()
+    options.use_chromium=True
+    options.binary_location=r'C:\Program Files\Google\Chrome\Application\chrome.exe'
+    browser=webdriver.Chrome(options=options,executable_path=webdriver_location)
+else:
+    options=EdgeOptions()
+    options.use_chromium=True
+    options.binary_location=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+    browser=Edge(options=options,executable_path=webdriver_location)
 failed=0
 passed=0
 total=0
@@ -40,7 +46,7 @@ nb=input("Number of Bots: ")
 try:
     host=socket.gethostbyname("quizizz.com")
     before=time.perf_counter()
-    time.sleep(0.25)
+    time.sleep(0.3)
     s=socket.create_connection((host, 80), 2)
     after=time.perf_counter()
     pingms=after-before
@@ -55,6 +61,7 @@ for i in range(int(nb)):
     passed=passed+1
     try:
         browser.get("https://quizizz.com/join")
+        time.sleep(pingms)
         search=browser.find_element_by_class_name("check-room-input")
         search.send_keys(qp)
         search.send_keys(Keys.RETURN)
@@ -67,11 +74,12 @@ for i in range(int(nb)):
         time.sleep(0.5)
         print("-Entering name option")
         search=browser.find_element_by_class_name("enter-name-field")
-        time.sleep(pingms)
+        time.sleep((pingms/2))
         search.send_keys(Keys.CONTROL+"A")
         search.send_keys(''.join(random.choice(string.ascii_letters) for _ in range(10)))
         search.send_keys(Keys.RETURN)
     except (Exception,NoSuchElementException):
+        print("-Failed Join")
         failed=failed+1
         passed=passed-1
     finally:
