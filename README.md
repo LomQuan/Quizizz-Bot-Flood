@@ -17,20 +17,7 @@ You must move the web driver exe file into the same folder as the python file, Y
 webdriver_location="<exe_file_name_here>"
 ```
 
-If you are using chrome instead of edge you also need to change the following lines from:
-```
-options=EdgeOptions()
-options.use_chromium=True
-options.binary_location=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
-browser=Edge(options=options,executable_path=webdriver_location)
-```
-To:
-```
-options=webdriver.ChromeOptions()
-options.use_chromium=True
-options.binary_location=r'C:\Program Files\Google\Chrome\Application\chrome.exe'
-browser=webdriver.Chrome(options=options,executable_path=webdriver_location)
-```
+Upon Startup you will also need to pick what browser you want to use. This should work without issues but it might not.
 
 # If There Are Still Issues
 If there are still issues after fixing the file to your liking then I would try the following things.
