@@ -8,7 +8,7 @@ try:
     from msedge.selenium_tools import Edge, EdgeOptions
     import random, string, time, os, socket
 except Exception:
-    import time
+    import time, os
     print("-Required packages not installed, installing now...")
     time.sleep(2.5)
     os.system("pip install selenium")
