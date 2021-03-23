@@ -24,7 +24,9 @@ except Exception:
     from msedge.selenium_tools import Edge, EdgeOptions
     import tkinter
     import glob
-    
+
+
+
 # Set Variables
 Running=False
 Webdriver=None #Build autodetect.
@@ -35,8 +37,10 @@ QuizPin=None
 BotsNumber=None
 BrowserType=None
 browser=None
-pingms=2
+pingms=None
 GUIText="Welcome To The Quizizz Bot Flood Client..."
+
+
 
 def GUI():
     global GUIText
@@ -72,67 +76,69 @@ def GUI():
     root.protocol("WM_DELETE_WINDOW",Exit)
     root.mainloop()
 
+
+
 # Start GUI As Thread
 interfacethread=threading.Thread(target=GUI)
 interfacethread.start()
 
+
+
 def display(text:str):
     # Display Text To Interface
+    global GUIText
     GUIText=GUIText+"\n"+text
 
-def setDriver():
-    # Set The WebDriver Useing Scan
-    location=os.getcwd()
-    fileset=[file for file in glob.glob(location + "**/*.py", recursive=True)]
-    for file in fileset:
-        if "web" in file.lower() and "driver" in file.lower():
-            webdriver_location=file
-            break
-        else:
-            webdriver_location="MicrosoftWebDriver.exe"
-        
-setDriver()
-        
-def startBrowser():
-    # If No WebDriver Set Don't Run
-    if Webdriver != None:
-	    # Pick Browser
-        if BrowserType.lower() == "c":
-            ### .add_argument('headless')
-            options=webdriver.ChromeOptions()
-            options.use_chromium=True
-	    options.add_argument('headless')
-            options.binary_location=r'C:\Program Files\Google\Chrome\Application\chrome.exe'
-            browser=webdriver.Chrome(options=options,executable_path=Webdriver)
-        else:
-            options=EdgeOptions()
-            options.use_chromium=True
-	    options.add_argument('headless')
-            options.binary_location=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
-            browser=Edge(options=options,executable_path=Webdriver)
+
+
+# Set The WebDriver Useing Scan
+location=os.getcwd()
+fileset=[file for file in glob.glob(location + "**/*.py", recursive=True)]
+for file in fileset:
+    if "web" in file.lower() and "driver" in file.lower():
+        webdriver_location=file
+        break
     else:
-	# Set New Driver And Run Again
-        setDriver()
-        startBrowser()
+        webdriver_location="MicrosoftWebDriver.exe"
 
-def calculateDelay():
-    try:
-        host=socket.gethostbyname("quizizz.com")
-        before=time.perf_counter()
-        time.sleep(0.3)
-        s=socket.create_connection((host, 80), 2)
-        after=time.perf_counter()
-        pingms=after-before
-        pingms=round(pingms, 2)+1
-    except:
-        pingms=2
-    finally:
-        display("[$] Calculated Delay: "+str(pingms))
 
-calculateDelay()
-startBrowser()
+
+try:
+    host=socket.gethostbyname("quizizz.com")
+    before=time.perf_counter()
+    time.sleep(0.3)
+    s=socket.create_connection((host, 80), 2)
+    after=time.perf_counter()
+    pingms=after-before
+    pingms=round(pingms, 2)+1
+except:
+    pingms=2
+finally:
+    display("[$] Calculated Delay: "+str(pingms))
+
+
+
+if Webdriver != None:
+    # Pick Browser
+    if BrowserType.lower() == "c":
+        ### .add_argument('headless')
+        options=webdriver.ChromeOptions()
+        options.use_chromium=True
+        options.add_argument('headless')
+        options.binary_location=r'C:\Program Files\Google\Chrome\Application\chrome.exe'
+        browser=webdriver.Chrome(options=options,executable_path=Webdriver)
+    else:
+        options=EdgeOptions()
+        options.use_chromium=True
+        options.add_argument('headless')
+        options.binary_location=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+        browser=Edge(options=options,executable_path=Webdriver)
+
+
+
 while True:
     # If Running == True:
+    Running=True
     if Running:
         # Set Total Up For This Run
         Total=Total+1
@@ -143,7 +149,7 @@ while True:
             time.sleep(pingms)
             # Search For Game Pin Input
             search=browser.find_element_by_class_name("check-room-input")
-            search.send_keys(qp)
+            search.send_keys(QuizPin)
             search.send_keys(Keys.RETURN)
             display("[$] Joined Game")
             time.sleep(pingms)
