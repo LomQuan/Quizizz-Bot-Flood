@@ -48,6 +48,7 @@ def JoinThread():
     global webdriver_location
     global bt
     if bt.lower() == "c":
+        ### .add_argument('headless')
         options=webdriver.ChromeOptions()
         options.use_chromium=True
         options.binary_location=r'C:\Program Files\Google\Chrome\Application\chrome.exe'
