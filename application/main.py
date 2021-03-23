@@ -34,6 +34,8 @@ Passed=0
 QuizPin=None
 BotsNumber=None
 BrowserType=None
+browser=None
+pingms=2
 GUIText="Welcome To The Quizizz Bot Flood Client..."
 
 def GUI():
@@ -56,7 +58,7 @@ def GUI():
     # Start Functions
     def Exit():
         root.destroy()
-	os._exit(1)
+        os._exit(1)
     def Update():
         text.set(GUIText)
         root.after(500,Update)
@@ -67,7 +69,7 @@ def GUI():
     tkinter.Label(root,textvariable=text,fg="#00eaff",bg="#000000",justify="left",anchor="sw",font=("Courier",13)).pack(fill='both',side="left")
     # End Widgets
     Update()
-    root.protocol("WM_DELETE_WINDOW",Disable_Close)
+    root.protocol("WM_DELETE_WINDOW",Exit)
     root.mainloop()
 
 # Start GUI As Thread
@@ -94,7 +96,7 @@ setDriver()
 def startBrowser():
     # If No WebDriver Set Don't Run
     if Webdriver != None:
-	# Pick Browser
+	    # Pick Browser
         if BrowserType.lower() == "c":
             ### .add_argument('headless')
             options=webdriver.ChromeOptions()
@@ -113,42 +115,57 @@ def startBrowser():
         setDriver()
         startBrowser()
 
+def calculateDelay():
+    try:
+        host=socket.gethostbyname("quizizz.com")
+        before=time.perf_counter()
+        time.sleep(0.3)
+        s=socket.create_connection((host, 80), 2)
+        after=time.perf_counter()
+        pingms=after-before
+        pingms=round(pingms, 2)+1
+    except:
+        pingms=2
+    finally:
+        display("[$] Calculated Delay: "+str(pingms))
+
+calculateDelay()
 startBrowser()
 while True:
     # If Running == True:
     if Running:
-	# Set Total Up For This Run
+        # Set Total Up For This Run
         Total=Total+1
-	Passed=Passed+1
-	try:
-		# Load Website
-		browser.get("https://quizizz.com/join")
-		time.sleep(pingms)
-		# Search For Game Pin Input
-		search=browser.find_element_by_class_name("check-room-input")
-		search.send_keys(qp)
-		search.send_keys(Keys.RETURN)
-		display("[$] Joined Game")
-		time.sleep(pingms)
-		# If Start Over Found, Click It.
-		if browser.find_elements_by_css_selector('.secondary-button.start-over'):
-		    g=browser.find_elements_by_css_selector('.secondary-button.start-over')
-		    display("[!] Start-Over button found")
-		    g[0].click()
-		time.sleep(0.5)
-		display("[$] Entering name option")
-		# Find Enter Name Element.
-		search=browser.find_element_by_class_name("enter-name-field")
-		time.sleep((pingms/2))
-		# Delete Current Name And Generate New Name
-		search.send_keys(Keys.CONTROL+"A")
-		search.send_keys(''.join(random.choice(string.ascii_letters) for _ in range(10)))
-		search.send_keys(Keys.RETURN)
-	except (Exception,NoSuchElementException):
-		# If Failed Remove Passed And Add Failed
-		display("[!] Failed Join")
-		Failed=Failed+1
-		Passed=Passed-1
-	finally:
-		# Sleep To Not Overload
-		time.sleep(pingms)
+        Passed=Passed+1
+        try:
+            # Load Website
+            browser.get("https://quizizz.com/join")
+            time.sleep(pingms)
+            # Search For Game Pin Input
+            search=browser.find_element_by_class_name("check-room-input")
+            search.send_keys(qp)
+            search.send_keys(Keys.RETURN)
+            display("[$] Joined Game")
+            time.sleep(pingms)
+            # If Start Over Found, Click It.
+            if browser.find_elements_by_css_selector('.secondary-button.start-over'):
+                g=browser.find_elements_by_css_selector('.secondary-button.start-over')
+                display("[!] Start-Over button found")
+                g[0].click()
+            time.sleep(0.5)
+            display("[$] Entering name option")
+            # Find Enter Name Element.
+            search=browser.find_element_by_class_name("enter-name-field")
+            time.sleep((pingms/2))
+            # Delete Current Name And Generate New Name
+            search.send_keys(Keys.CONTROL+"A")
+            search.send_keys(''.join(random.choice(string.ascii_letters) for _ in range(10)))
+            search.send_keys(Keys.RETURN)
+        except (Exception,NoSuchElementException):
+            # If Failed Remove Passed And Add Failed
+            display("[!] Failed Join")
+            Failed=Failed+1
+            Passed=Passed-1
+        finally:
+            # Sleep To Not Overload
+            time.sleep(pingms)
