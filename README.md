@@ -2,7 +2,7 @@
 A Quizizz bot flood "hack". Tested only on windows so far. This was developed for educational and experimental reasons only, if you want to use it for more that is your own choice. I am not responsible for what you do with this project in any way.
 
 
-Do to the amount of traction this project got I'm planning on making this easier to use. Please have wait for a little while this is in development.
+Do to the amount of traction this project got I'm planning on making this easier to use. Please wait a little for this while its in development.
 -
 
 # How To Use
