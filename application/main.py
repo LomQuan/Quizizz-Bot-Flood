@@ -1,36 +1,17 @@
-try:
-    import tkinter
-    import pyautogui as pya
-    import random, string, time, os, socket, threading
-    from selenium import webdriver
-    from selenium.webdriver.common.keys import Keys
-    from selenium.webdriver.common.by import By
-    from selenium.webdriver.support.ui import WebDriverWait
-    from selenium.webdriver.support import expected_conditions as EC
-    from selenium.common.exceptions import NoSuchElementException
-    from msedge.selenium_tools import Edge, EdgeOptions
-    import win32gui, win32con
-    import glob
-except Exception:
-    import random, string, time, os, socket, threading
-    # If Error Importing Install Fixes And Run
-    os.system("pip install selenium")
-    os.system("pip install msedge-selenium-tools")
-    os.system("pip install pyautogui")
-    os.system("pip install win32gui")
-    os.system("pip install pywin32")
-    time.sleep(0.5)
-    import pyautogui as pya
-    import win32gui, win32con
-    from selenium import webdriver
-    from selenium.webdriver.common.keys import Keys
-    from selenium.webdriver.common.by import By
-    from selenium.webdriver.support.ui import WebDriverWait
-    from selenium.webdriver.support import expected_conditions as EC
-    from selenium.common.exceptions import NoSuchElementException
-    from msedge.selenium_tools import Edge, EdgeOptions
-    import tkinter
-    import glob
+# Try/Except Not Needed For Exe.
+import tkinter
+import pyautogui as pya
+import random, string, time, os, socket, threading
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
+from msedge.selenium_tools import Edge, EdgeOptions
+import win32gui, win32con
+import ctypes
+import glob
 
 # Set Variables
 Running=False
@@ -112,7 +93,6 @@ def display(text:str):
 location=os.getcwd()
 fileset=[file for file in glob.glob(location + "**/*.exe", recursive=True)]
 for file in fileset:
-    print("-FileName: "+str(file))
     if "web" in file.lower() and "driver" in file.lower():
         webdriver_location=file
         break
@@ -144,8 +124,27 @@ else:
     options.binary_location=r'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
     browser=Edge(options=options,executable_path=webdriver_location)
 
-hide=win32gui.FindWindow(None, cls.processname)
-win32gui.ShowWindow(hide,win32con.SW_HIDE)
+EnumWindows=ctypes.windll.user32.EnumWindows
+EnumWindowsProc=ctypes.WINFUNCTYPE(ctypes.c_bool,ctypes.POINTER(ctypes.c_int),ctypes.POINTER(ctypes.c_int))
+GetWindowText=ctypes.windll.user32.GetWindowTextW
+GetWindowTextLength=ctypes.windll.user32.GetWindowTextLengthW
+IsWindowVisible=ctypes.windll.user32.IsWindowVisible
+titles=[]
+
+def foreach_window(hwnd, lParam):
+	if IsWindowVisible(hwnd):
+		length=GetWindowTextLength(hwnd)
+		buff=ctypes.create_unicode_buffer(length + 1)
+		GetWindowText(hwnd, buff, length + 1)
+		titles.append(buff.value)
+	return True
+
+EnumWindows(EnumWindowsProc(foreach_window), 0)
+
+for title in titles:
+    if "data:," in title:
+        hide=win32gui.FindWindowEx(None, None, None, title)
+        win32gui.ShowWindow(hide,win32con.SW_HIDE)
 
 while True:
     # If Running == True:
