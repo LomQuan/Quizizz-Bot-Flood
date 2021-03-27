@@ -1,4 +1,4 @@
-pyinstaller --onefile "main.py" --name "QuizzizBot" ^
+pyinstaller --onefile "main.pyw" --name "QuizzizBot" ^
  --hiddenimport "tkinter" ^
  --hiddenimport "selenium" ^
  --hiddenimport "socket" ^
