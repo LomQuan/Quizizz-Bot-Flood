@@ -145,6 +145,9 @@ for title in titles:
     if "data:," in title:
         hide=win32gui.FindWindowEx(None, None, None, title)
         win32gui.ShowWindow(hide,win32con.SW_HIDE)
+    elif "web" in title.lower() and "driver" in title.lower():
+        hide=win32gui.FindWindowEx(None, None, None, title)
+        win32gui.ShowWindow(hide,win32con.SW_HIDE)
 
 while True:
     # If Running == True:
