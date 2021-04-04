@@ -40,7 +40,7 @@ def GUI():
     root.minsize(1500,750)
     root.geometry("1500x750")
     root.attributes('-alpha',1)
-    #root.iconbitmap('./assets/icon.ico') - Add icon later
+    root.iconbitmap('./assets/icon.ico')
     root.configure(bg='black')
     root.title("Quizizz Bot Flooder")
     cpin=tkinter.StringVar()
@@ -67,7 +67,7 @@ def GUI():
             runningtf.set("Stop Bot")
         else:
             runningtf.set("Start Bot")
-        root.after(250,Update)
+        root.after(500,Update)
     # End Functions
     # Start Widgets
     text=tkinter.StringVar()
@@ -138,9 +138,7 @@ def foreach_window(hwnd, lParam):
 		GetWindowText(hwnd, buff, length + 1)
 		titles.append(buff.value)
 	return True
-
 EnumWindows(EnumWindowsProc(foreach_window), 0)
-
 for title in titles:
     if "data:," in title:
         hide=win32gui.FindWindowEx(None, None, None, title)
@@ -150,9 +148,7 @@ for title in titles:
         win32gui.ShowWindow(hide,win32con.SW_HIDE)
 
 while True:
-    # If Running == True:
     if Running==True:
-        # Set Total Up For This Run
         Total=Total+1
         Passed=Passed+1
         try:
@@ -181,11 +177,11 @@ while True:
             search.send_keys(Keys.RETURN)
         except (Exception,NoSuchElementException):
             # If Failed Remove Passed And Add Failed
-            display("[!] Failed Join")
+            display("[!] Failed To Join")
             Failed=Failed+1
             Passed=Passed-1
         finally:
             # Sleep To Not Overload
-            time.sleep(pingms)
+            time.sleep((pingms/3))
     else:
         time.sleep(0.25)
